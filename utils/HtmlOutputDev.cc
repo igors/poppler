@@ -65,18 +65,15 @@
 
 #define DEBUG __FILE__ << ": " << __LINE__ << ": DEBUG: "
 
-struct HtmlImage
+class HtmlImage
 {
-  HtmlImage(GooString *_fName)
-      : xMin(0), xMax(1),
-        yMin(0), yMax(1),
-        fName(_fName) {}
- ~HtmlImage() { delete fName; }
-  void transform(GfxState *state)
-  {
+public:
+    HtmlImage(GooString *_fName, GfxState *state)
+      : fName(_fName) {
     state->transform(0, 0, &xMin, &yMax);
     state->transform(1, 1, &xMax, &yMin);
   }
+ ~HtmlImage() { delete fName; }
 
   double xMin, xMax;		// image x coordinates
   double yMin, yMax;		// image y coordinates
@@ -1301,8 +1298,7 @@ void HtmlOutputDev::drawImageMask(GfxState *state, Object *ref, Stream *str,
     fclose(f1);
    
     if (fName) {
-        HtmlImage *img = new HtmlImage(fName);
-        img->transform(state);
+        HtmlImage *img = new HtmlImage(fName, state);
         imgList->append(img);
     }
   }
@@ -1357,8 +1353,7 @@ void HtmlOutputDev::drawImage(GfxState *state, Object *ref, Stream *str,
     fclose(f1);
   
     if (fName) {
-        HtmlImage *img = new HtmlImage(fName);
-        img->transform(state);
+        HtmlImage *img = new HtmlImage(fName, state);
         imgList->append(img);
     }
   }
@@ -1426,8 +1421,7 @@ void HtmlOutputDev::drawImage(GfxState *state, Object *ref, Stream *str,
     fclose(f1);
 
     free(row);
-    HtmlImage *img = new HtmlImage(fName);
-    img->transform(state);
+    HtmlImage *img = new HtmlImage(fName, state);
     imgList->append(img);
     ++imgNum;
     imgStr->close();

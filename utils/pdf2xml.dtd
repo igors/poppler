@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT pdf2xml (page+)>
 <!ELEMENT page (fontspec*, image*, text*)>
 <!ATTLIST page
